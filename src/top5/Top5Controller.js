@@ -63,7 +63,6 @@ export default class Top5Controller {
     registerListSelectHandlers(id) {
         document.getElementById("top5-list-" + id).onmouseenter = (event) => {
             let top5List = document.getElementById("top5-list-" + id);
-            console.log(top5List.classList);
             if (top5List.classList.contains("selected-list-card")) {
             }
             else {
@@ -73,7 +72,6 @@ export default class Top5Controller {
         }
         document.getElementById("top5-list-" + id).onmouseleave = (event) => {
             let top5List = document.getElementById("top5-list-" + id);
-            console.log(top5List.classList);
             if (top5List.classList.contains("selected-list-card")) {
             }
             else {
