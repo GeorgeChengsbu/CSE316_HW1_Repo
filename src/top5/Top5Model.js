@@ -74,6 +74,10 @@ export default class Top5Model {
                 return 1;
             }
         });
+        for (let i = 0; i < this.top5Lists.length; i++) {
+            let list = this.top5Lists[i];
+            list.id = i;
+        }
         this.view.refreshLists(this.top5Lists);
     }
 

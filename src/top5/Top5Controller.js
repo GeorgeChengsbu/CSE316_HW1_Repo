@@ -61,6 +61,26 @@ export default class Top5Controller {
     }
 
     registerListSelectHandlers(id) {
+        document.getElementById("top5-list-" + id).onmouseenter = (event) => {
+            let top5List = document.getElementById("top5-list-" + id);
+            console.log(top5List.classList);
+            if (top5List.classList.contains("selected-list-card")) {
+            }
+            else {
+                this.model.view.hoverHighlightList(id);
+            }
+            
+        }
+        document.getElementById("top5-list-" + id).onmouseleave = (event) => {
+            let top5List = document.getElementById("top5-list-" + id);
+            console.log(top5List.classList);
+            if (top5List.classList.contains("selected-list-card")) {
+            }
+            else {
+                this.model.view.hoverUnhighlightList(id);
+            }
+        }
+        
         // FOR SELECTING THE LIST
         document.getElementById("top5-list-" + id).onmousedown = (event) => {
             this.model.unselectAll();
@@ -94,16 +114,21 @@ export default class Top5Controller {
             }
             textInput.onkeydown = (event) => {
                 if (event.key === 'Enter') {
-                 //   this.model.currentList = textInput;
                     this.model.currentList.setName(event.target.value);
                     this.model.currentList = event.target.value;
                     top5List.innerHTML = "";
                     top5List.appendChild(document.createTextNode(this.model.currentList));
                     this.model.saveLists();
+                    this.model.sortLists();
                 }
             }
             textInput.onblur = (event) => {
-                this.model.currentList = textInput;
+                this.model.currentList.setName(event.target.value);
+                    this.model.currentList = event.target.value;
+                    top5List.innerHTML = "";
+                    top5List.appendChild(document.createTextNode(this.model.currentList));
+                    this.model.saveLists();
+                    this.model.sortLists();
             }            
         }
     }

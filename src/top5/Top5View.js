@@ -16,6 +16,7 @@ export default class Top5View {
 
         for (let i = 0; i < lists.length; i++) {
             let list = lists[i];
+            console.log(lists[i]);
             this.appendListToView(list);
         }
     }
@@ -91,9 +92,20 @@ export default class Top5View {
         // HIGHLIGHT THE LIST
         let listCard = document.getElementById("top5-list-" + listId);
         listCard.classList.remove("unselected-list-card");
+        listCard.classList.remove("hovered-list-card");
         listCard.classList.add("selected-list-card");
     }
 
+    hoverHighlightList(listId) {
+        let listCard = document.getElementById("top5-list-" + listId);
+        listCard.classList.remove("unselected-list-card");
+        listCard.classList.add("hovered-list-card");
+    }
+    hoverUnhighlightList(listId) {
+        let listCard = document.getElementById("top5-list-" + listId);
+        listCard.classList.add("unselected-list-card");
+        listCard.classList.remove("hovered-list-card");
+    }
     unhighlightList(listId) {
         // HIGHLIGHT THE LIST
         let listCard = document.getElementById("top5-list-" + listId);
