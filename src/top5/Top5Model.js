@@ -67,7 +67,7 @@ export default class Top5Model {
             if (listA.getName() < listB.getName()) {
                 return -1;
             }
-            else if (listA.getName === listB.getName()) {
+            else if (listA.getName() === listB.getName()) {
                 return 0;
             }
             else {

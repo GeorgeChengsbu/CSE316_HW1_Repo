@@ -44,7 +44,6 @@ export default class Top5Controller {
                     textInput.setAttribute("value", this.model.currentList.getItemAt(i-1));
 
                     item.appendChild(textInput);
-
                     textInput.ondblclick = (event) => {
                         this.ignoreParentClick(event);
                     }
@@ -54,7 +53,7 @@ export default class Top5Controller {
                         }
                     }
                     textInput.onblur = (event) => {
-                        this.model.restoreList();
+                        this.model.addChangeItemTransaction(i-1, event.target.value);
                     }
                 }
             }
@@ -80,6 +79,32 @@ export default class Top5Controller {
             deleteSpan.innerHTML = "";
             deleteSpan.appendChild(document.createTextNode(listName));
             modal.classList.add("is-visible");
+        }
+
+        document.getElementById("top5-list-" + id).ondblclick = (event) => {
+            let top5List = document.getElementById("top5-list-" + id);
+            let textInput = document.createElement("input");
+            top5List.innerHTML = "";
+            textInput.setAttribute("type", "text");
+            textInput.setAttribute("id", "top5-list-text-input-" + id);
+            textInput.setAttribute("value", this.model.currentList.getName());
+            top5List.appendChild(textInput);
+            textInput.ondblclick = (event) => {
+                this.ignoreParentClick(event);
+            }
+            textInput.onkeydown = (event) => {
+                if (event.key === 'Enter') {
+                 //   this.model.currentList = textInput;
+                    this.model.currentList.setName(event.target.value);
+                    this.model.currentList = event.target.value;
+                    top5List.innerHTML = "";
+                    top5List.appendChild(document.createTextNode(this.model.currentList));
+                    this.model.saveLists();
+                }
+            }
+            textInput.onblur = (event) => {
+                this.model.currentList = textInput;
+            }            
         }
     }
 

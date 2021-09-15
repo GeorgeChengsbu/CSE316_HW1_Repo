@@ -64,6 +64,7 @@ export default class Top5View {
         for (let i = 0; i < 5; i++) {
             let item = document.getElementById("item-" + (i+1));
             item.innerHTML = "";
+            console.log(list.getItemAt(i));
             item.appendChild(document.createTextNode(list.getItemAt(i)));
         }
     }
