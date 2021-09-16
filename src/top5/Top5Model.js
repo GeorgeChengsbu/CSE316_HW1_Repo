@@ -156,6 +156,17 @@ export default class Top5Model {
         this.saveLists();
     }
 
+    deleteList(listId) {
+        this.top5Lists.splice(listId, 1);
+        for (let i = 0; i < this.top5Lists.length; i++) {
+            let list = this.top5Lists[i];
+            list.id = i;
+        }
+        this.unselectAll();
+        this.view.refreshLists(this.top5Lists);
+        this.saveLists();
+    }
+
     // SIMPLE UNDO/REDO FUNCTIONS
     undo() {
         if (this.tps.hasTransactionToUndo()) {

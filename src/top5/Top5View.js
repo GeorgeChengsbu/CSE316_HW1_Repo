@@ -16,7 +16,6 @@ export default class Top5View {
 
         for (let i = 0; i < lists.length; i++) {
             let list = lists[i];
-            console.log(lists[i]);
             this.appendListToView(list);
         }
     }

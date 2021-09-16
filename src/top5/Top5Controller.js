@@ -97,11 +97,22 @@ export default class Top5Controller {
             deleteSpan.innerHTML = "";
             deleteSpan.appendChild(document.createTextNode(listName));
             modal.classList.add("is-visible");
+            var confirmButton = document.getElementById("dialog-confirm-button");
+            var cancelButton = document.getElementById("dialog-cancel-button");
+            confirmButton.onmousedown = (event) => {
+                modal.classList.remove("is-visible");
+                this.model.deleteList(id);
+            }
+            cancelButton.onmousedown = (event) => {
+                modal.classList.remove("is-visible");
+            }
+
         }
 
         document.getElementById("top5-list-" + id).ondblclick = (event) => {
             let top5List = document.getElementById("top5-list-" + id);
             let textInput = document.createElement("input");
+            let currentList = this.model.currentList;
             top5List.innerHTML = "";
             textInput.setAttribute("type", "text");
             textInput.setAttribute("id", "top5-list-text-input-" + id);
@@ -112,21 +123,26 @@ export default class Top5Controller {
             }
             textInput.onkeydown = (event) => {
                 if (event.key === 'Enter') {
-                    this.model.currentList.setName(event.target.value);
-                    this.model.currentList = event.target.value;
+                    currentList.setName(event.target.value);
+                    currentList = event.target.value;
                     top5List.innerHTML = "";
                     top5List.appendChild(document.createTextNode(this.model.currentList));
-                    this.model.saveLists();
                     this.model.sortLists();
+                    this.model.saveLists();
+                    this.model.unselectAll();
+                    this.model.loadList(id);
                 }
             }
             textInput.onblur = (event) => {
-                this.model.currentList.setName(event.target.value);
-                    this.model.currentList = event.target.value;
-                    top5List.innerHTML = "";
-                    top5List.appendChild(document.createTextNode(this.model.currentList));
-                    this.model.saveLists();
-                    this.model.sortLists();
+                currentList.setName(event.target.value);
+                currentList = event.target.value;
+                console.log(event.target.value);
+                top5List.innerHTML = "";
+                top5List.appendChild(document.createTextNode(this.model.currentList));
+                this.model.sortLists();
+                this.model.saveLists();
+                this.model.unselectAll();
+                this.model.loadList(id);
             }            
         }
     }
