@@ -26,6 +26,14 @@ export default class Top5Controller {
         document.getElementById("undo-button").onmousedown = (event) => {
             this.model.undo();
         }
+        document.getElementById("redo-button").onmousedown = (event) => {
+            this.model.redo();
+        }
+        document.getElementById("close-button").onmousedown = (event) => {
+            this.model.view.clearWorkspace();
+            this.model.unselectAll();
+            this.model.currentList = null;
+        }
 
         // SETUP THE ITEM HANDLERS
         for (let i = 1; i <= 5; i++) {

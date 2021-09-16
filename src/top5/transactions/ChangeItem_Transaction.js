@@ -25,4 +25,7 @@ export default class ChangeItem_Transaction extends jsTPS_Transaction {
     undoTransaction() {
         this.model.changeItem(this.id, this.oldText);
     }
+    redoTransaction() {
+        this.model.changeItem(this.id, this.newText);
+    }
 }

@@ -163,6 +163,8 @@ export default class Top5Model {
             list.id = i;
         }
         this.unselectAll();
+        this.view.clearWorkspace();
+        this.currentList = null;
         this.view.refreshLists(this.top5Lists);
         this.saveLists();
     }
@@ -171,6 +173,12 @@ export default class Top5Model {
     undo() {
         if (this.tps.hasTransactionToUndo()) {
             this.tps.undoTransaction();
+            this.view.updateToolbarButtons(this);
+        }
+    }
+    redo() {
+        if (this.tps.hasTransactionToRedo()) {
+            this.tps.redoTransaction();
             this.view.updateToolbarButtons(this);
         }
     }
