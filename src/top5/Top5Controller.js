@@ -19,9 +19,11 @@ export default class Top5Controller {
     initHandlers() {
         // SETUP THE TOOLBAR BUTTON HANDLERS
         document.getElementById("add-list-button").onmousedown = (event) => {
-            let newList = this.model.addNewList("Untitled", ["?","?","?","?","?"]);            
-            this.model.loadList(newList.id);
-            this.model.saveLists();
+            if(!(this.model.hasCurrentList())) {
+                let newList = this.model.addNewList("Untitled", ["?","?","?","?","?"]);            
+                this.model.loadList(newList.id);
+                this.model.saveLists();
+            }
         }
         document.getElementById("undo-button").onmousedown = (event) => {
             this.model.undo();
@@ -33,12 +35,33 @@ export default class Top5Controller {
             this.model.view.clearWorkspace();
             this.model.unselectAll();
             this.model.currentList = null;
+            let statusbar = document.getElementById("top5-statusbar");
+            statusbar.innerHTML = "";
+            this.model.view.updateToolbarButtons(this.model);
         }
 
         // SETUP THE ITEM HANDLERS
         for (let i = 1; i <= 5; i++) {
             let item = document.getElementById("item-" + i);
-
+            
+            item.ondragover = (ev) => {
+                ev.preventDefault();
+            }
+            
+            item.ondragstart = (ev) => {
+                ev.dataTransfer.setData("text", ev.target.id);
+            }
+            
+            item.ondrop = (ev) => {
+                ev.preventDefault();
+                var data = ev.dataTransfer.getData("text");
+                let oldId = parseInt(data.substring(5));
+                let newId = parseInt(item.id.substring(5));
+                oldId--;
+                newId--;
+                this.model.addMoveItemTransaction(oldId, newId);
+                this.model.view.updateToolbarButtons(this.model);
+            }
             // AND FOR TEXT EDITING
             item.ondblclick = (ev) => {
                 if (this.model.hasCurrentList()) {
@@ -58,10 +81,12 @@ export default class Top5Controller {
                     textInput.onkeydown = (event) => {
                         if (event.key === 'Enter') {
                             this.model.addChangeItemTransaction(i-1, event.target.value);
+                            this.model.view.updateToolbarButtons(this.model);
                         }
                     }
                     textInput.onblur = (event) => {
                         this.model.addChangeItemTransaction(i-1, event.target.value);
+                        this.model.view.updateToolbarButtons(this.model);
                     }
                 }
             }
@@ -110,11 +135,11 @@ export default class Top5Controller {
             confirmButton.onmousedown = (event) => {
                 modal.classList.remove("is-visible");
                 this.model.deleteList(id);
+                this.model.view.updateToolbarButtons(this.model);
             }
             cancelButton.onmousedown = (event) => {
                 modal.classList.remove("is-visible");
             }
-
         }
 
         document.getElementById("top5-list-" + id).ondblclick = (event) => {

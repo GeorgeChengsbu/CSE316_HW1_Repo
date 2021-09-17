@@ -65,6 +65,7 @@ export default class Top5View {
             let item = document.getElementById("item-" + (i+1));
             item.innerHTML = "";
             item.appendChild(document.createTextNode(list.getItemAt(i)));
+            item.draggable = "true";
         }
     }
 
@@ -112,12 +113,29 @@ export default class Top5View {
     }
 
     updateToolbarButtons(model) {
-        let tps = model.tps;
-        if (!tps.hasTransactionToUndo()) {
+        if (!model.hasCurrentList()) {
             this.disableButton("undo-button");
+            this.disableButton("close-button");
+            this.disableButton("redo-button");
+            this.enableButton("add-list-button");
         }
         else {
-            this.enableButton("undo-button");
-        }   
+            this.disableButton("add-list-button");
+            this.enableButton("close-button");
+            let tps = model.tps;
+            if (!tps.hasTransactionToUndo()) {
+                this.disableButton("undo-button");
+            }
+            else {
+                this.enableButton("undo-button");
+            }  
+            if (!tps.hasTransactionToRedo()) {
+                this.disableButton("redo-button");
+            }
+            else {
+                this.enableButton("redo-button");
+            }
+        }
+
     }
 }

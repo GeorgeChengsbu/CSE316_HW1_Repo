@@ -1,6 +1,7 @@
 import jsTPS from "../common/jsTPS.js"
 import Top5List from "./Top5List.js";
 import ChangeItem_Transaction from "./transactions/ChangeItem_Transaction.js"
+import MoveItem_Transaction from "./transactions/MoveItem_Transaction.js";
 
 /**
  * Top5Model.js
@@ -91,8 +92,13 @@ export default class Top5Model {
             this.view.unhighlightList(i);
         }
     }
-
+    moveItem(oldIndex, newIndex) {
+        this.currentList.moveItem(oldIndex, newIndex);
+        console.log(this.currentList);
+        this.view.update(this.currentList);
+    }
     loadList(id) {
+        let previousCurrentList = this.currentList;
         let list = null;
         let found = false;
         let i = 0;
@@ -107,7 +113,13 @@ export default class Top5Model {
             }
             i++;
         }
-        this.tps.clearAllTransactions();
+        let statusBar = document.getElementById("top5-statusbar");
+        statusBar.innerHTML = "Top 5 " + this.currentList.getName();
+        if(previousCurrentList == this.currentList) {
+        }
+        else {
+            this.tps.clearAllTransactions();
+        }
         this.view.updateToolbarButtons(this);
     }
 
@@ -149,13 +161,15 @@ export default class Top5Model {
         let transaction = new ChangeItem_Transaction(this, id, oldText, newText);
         this.tps.addTransaction(transaction);
     }
-
+    addMoveItemTransaction = (oldId, newId) => {
+        let transaction = new MoveItem_Transaction(this, oldId, newId);
+        this.tps.addTransaction(transaction);
+    }
     changeItem(id, text) {
         this.currentList.items[id] = text;
         this.view.update(this.currentList);
         this.saveLists();
     }
-
     deleteList(listId) {
         this.top5Lists.splice(listId, 1);
         for (let i = 0; i < this.top5Lists.length; i++) {
@@ -165,6 +179,8 @@ export default class Top5Model {
         this.unselectAll();
         this.view.clearWorkspace();
         this.currentList = null;
+        let statusbar = document.getElementById("top5-statusbar");
+        statusbar.innerHTML = "";
         this.view.refreshLists(this.top5Lists);
         this.saveLists();
     }

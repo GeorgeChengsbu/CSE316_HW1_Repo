@@ -40,6 +40,7 @@ export class Top5ListerApp {
         if (!success) {
             this.loadListsFromJSON("./data/default_lists.json");
         }
+        this.model.view.updateToolbarButtons(this.model);
     }
 
     loadListsFromJSON(jsonFilePath) {
