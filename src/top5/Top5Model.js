@@ -94,8 +94,8 @@ export default class Top5Model {
     }
     moveItem(oldIndex, newIndex) {
         this.currentList.moveItem(oldIndex, newIndex);
-        console.log(this.currentList);
         this.view.update(this.currentList);
+        this.saveLists();
     }
     loadList(id) {
         let previousCurrentList = this.currentList;
