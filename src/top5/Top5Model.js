@@ -16,7 +16,7 @@ import MoveItem_Transaction from "./transactions/MoveItem_Transaction.js";
  * inside the view of the page.
  * 
  * @author McKilla Gorilla
- * @author ?
+ * @author George Cheng
  */
 export default class Top5Model {
     constructor() {

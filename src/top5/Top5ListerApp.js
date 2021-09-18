@@ -9,7 +9,7 @@ import Top5Controller from './Top5Controller.js';
  * app with all needed initialization.
  * 
  * @author McKilla Gorilla
- * @author ?
+ * @author George Cheng
  */
 
 export class Top5ListerApp {
